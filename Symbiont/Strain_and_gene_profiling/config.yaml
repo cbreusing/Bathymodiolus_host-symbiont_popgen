@@ -1,0 +1,56 @@
+# ------ Samples ------
+samples: ['*'] # specify a list samples to use or '*' to use all samples
+
+# ------ Resources ------
+threads : 32 # single task nb threads
+
+# ------ Assembly parameters ------ 
+data:  /gpfs/data/rbeinart/cbreusing/Bathymodiolus_septemdierum_metagenomics/symbiont_popgen/strain_deconvolution  # path to data folder
+
+# ----- Annotation database -----
+cog_database: /gpfs/data/rbeinart/Databases/rpsblast_cog_db/Cog # COG database
+
+# ----- Binner ------
+binner: "metabat2"
+#binner: "concoct"
+
+# ----- Binning parameters ------
+binner: metabat2
+#binner: concoct
+
+metabat2:
+    contig_size: 1500
+
+#concoct:
+#    contig_size: 1000
+
+mag_quality_threshold: 0.85
+read_length: 150
+assembly: 
+    assembler: spades
+    k: [33,55,77]
+    mem: 2000
+    threads: 32
+
+# ----- BayesPaths parameters ------
+bayespaths:
+    nb_strains: 15
+    nmf_runs: 5
+    max_giter: 5
+    min_orf_number_to_merge_bins: 18
+    min_orf_number_to_run_a_bin: 10
+    percent_unitigs_shared: 0.1
+    min_cov: 1
+    optional_args: '--norun_elbow'
+
+# ----- DESMAN parameters ------
+desman:
+    execution: 1
+    nb_haplotypes: 12
+    nb_repeat: 5
+    min_cov: 1
+
+# -----  Evaluation ------
+evaluation:
+    execution: 0
+    genomes: "/gpfs/data/rbeinart/cbreusing/Bathymodiolus_septemdierum_metagenomics/metagenomes" # path to reference genomes
