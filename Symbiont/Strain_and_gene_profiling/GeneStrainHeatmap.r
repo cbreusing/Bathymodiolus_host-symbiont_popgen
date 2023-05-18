@@ -1,0 +1,42 @@
+library(ggplot2)
+library(vegan)
+library(gridExtra)
+library(ComplexHeatmap)
+library(RColorBrewer)
+library(circlize)
+
+setwd("/Users/Corinna/Documents/Work/Beinart_Lab/Bathymodiolus_metagenomics/Thiodubiliella")
+data <- read.table("gene_presence_absence_reduced.txt", header=T, row.names=1)
+mat <- as.matrix(data)
+pop <- read.table("Thiodubiliella.clst2", header=T)
+cat <- read.table("categories.txt", header=T)
+pal <- c("gainsboro", "snow4")
+col = c("darkslategray2", "darkslategray4")
+
+ha <- HeatmapAnnotation(df = pop, annotation_height = unit(4, "mm"), col = list(Vent = c("Tow Cam" = "plum3", "Tahi Moana" = "royalblue3", "ABE 16" = "lightsteelblue4", "ABE 09" = "lightsteelblue", "Tu'i Malila 16" = "darkgoldenrod1", "Tu'i Malila 09" = "lightgoldenrod1")), annotation_legend_param = list(Vent = list(nrow = 1, title_position = "leftcenter")))
+hb <- rowAnnotation(df = cat, df2 = anno_mark(at = c(1,2,4,9,10,11,14,18,20,21,23,25,26,46), labels = c("Adhesion (1)", "Aerobic Respiration (2)", "Anti-viral Defense (5)", "Cell Regulation (1)", "Conjugation (1)", "Copper Metabolism (1)", "DNA Metabolism (5)", "Hydrogen Metabolism (3)", "Membrane Transport (1)", "Miscellaneous Functions (2)", "Mobilome (2)", "Nitrogen Metabolism (1)", "RNA Metabolism (1)", "Uncharacterized Proteins (38)"), labels_gp = gpar(fontsize = 9)), show_legend = FALSE, annotation_height = unit(4, "mm"), col = list(Category = c("Adhesion" = pal[1], "Aerobic Respiration" = pal[2], "Anti-viral Defense" = pal[1], "Cell Regulation" = pal[2], "Conjugation" = pal[1], "Copper Metabolism" = pal[2], "DNA Metabolism" = pal[1], "Hydrogen Metabolism" = pal[2], "Membrane Transport" = pal[1], "Miscellaneous Functions" = pal[2], "Mobilome" = pal[1], "Nitrogen Metabolism" = pal[2], "RNA Metabolism" = pal[1], "Uncharacterized Proteins" = pal[2])))
+
+pdf("Presence_absence_heatmap_reduced.pdf")
+map <- Heatmap(mat, top_annotation = ha, right_annotation = hb, km = 1, name = "Presence", col = col, show_row_names = FALSE, cluster_rows = FALSE, clustering_distance_columns = "binary", clustering_method_columns = "complete", show_column_names = FALSE, show_column_dend = FALSE, column_dend_reorder = FALSE)
+draw(map, heatmap_legend_side = "right", annotation_legend_side = "bottom")
+dev.off()
+
+setwd("/Users/Corinna/Documents/Work/Beinart_Lab/Bathymodiolus_metagenomics/Thiodubiliella/STRONG")
+data <- read.table("mag_and_haplo_cov.tsv", header=T, row.names=1)
+mat <- as.matrix(data)
+data2 <- read.table("Gamma_star.tsv", header=T, row.names=1)
+mat2 <- as.matrix(data2)
+pop <- read.table("Thiodubiliella.clst", header=T)
+col = c("darkslategray2", "darkslategray4")
+
+ha <- HeatmapAnnotation(df = pop, annotation_height = unit(4, "mm"), col = list(Vent = c("Tow Cam" = "plum3", "Tahi Moana" = "royalblue3", "ABE 16" = "lightsteelblue4", "ABE 09" = "lightsteelblue", "Tu'i Malila 16" = "darkgoldenrod1", "Tu'i Malila 09" = "lightgoldenrod1")), annotation_legend_param = list(Vent = list(nrow = 1, title_position = "leftcenter")))
+
+pdf("Bayespaths_haplotype_heatmap.pdf")
+map <- Heatmap(mat, top_annotation = ha, km = 1, name = "Coverage", col = col, show_row_names = TRUE, cluster_rows = FALSE, clustering_distance_columns = "manhattan", clustering_method_columns = "complete", show_column_names = FALSE, show_column_dend = TRUE, column_dend_reorder = TRUE)
+draw(map, heatmap_legend_side = "right", annotation_legend_side = "bottom")
+dev.off()
+
+pdf("DESMAN_haplotype_heatmap.pdf")
+map <- Heatmap(mat2, top_annotation = ha, km = 1, name = "Abundance", col = col, show_row_names = TRUE, cluster_rows = FALSE, clustering_distance_columns = "manhattan", clustering_method_columns = "complete", show_column_names = FALSE, show_column_dend = TRUE, column_dend_reorder = TRUE)
+draw(map, heatmap_legend_side = "right", annotation_legend_side = "bottom")
+dev.off()
