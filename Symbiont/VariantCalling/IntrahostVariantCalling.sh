@@ -23,7 +23,7 @@ freebayes -f Thiodubiliella_pangenome.fasta -b ${file}.Thiodubiliella.subsampled
 cat ${file}.normalized.vcf | vcf-sort -c > ${file}.normalized.sorted.vcf
 bgzip -c ${file}.normalized.sorted.vcf > ${file}.normalized.vcf.gz
 tabix -p vcf ${file}.normalized.vcf.gz
-bcftools filter -g 5 -o ${file}.normalized.filtered.vcf -O v ${file}.normalized.vcf.gz
-gatk VariantsToTable -V ${file}.normalized.filtered.vcf -O ${file}.normalized.notFiltered.AF.txt -ASGF AD
+bcftools filter -g 5 -o ${file}.normalized.minFiltered.vcf -O v ${file}.normalized.vcf.gz
+gatk VariantsToTable -V ${file}.normalized.minFiltered.vcf -O ${file}.normalized.minFiltered.AF.txt -ASGF AD
 
 done
