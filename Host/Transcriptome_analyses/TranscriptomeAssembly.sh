@@ -93,11 +93,15 @@ grep "no-hit" B_septemdierum.blobDB.table.txt >> seqs_to_keep.txt
 perl -anle 'print $F[0]' seqs_to_keep.txt > euk_seqs.txt
 seqtk subseq B_septemdierum.Trinity.merged95.fasta.transdecoder.cds euk_seqs.txt > B_septemdierum.Trinity.merged95.filtered.cds
 
+grep ">" B_septemdierum.Trinity.merged95.filtered.cds > filtered_cds.txt
+sed -e "s/>//g" filtered_cds.txt | sed -e "s/\..*//g" - | sort -u > filtered_cds.sorted.txt
+seqtk subseq B_septemdierum.Trinity.merged95.fasta filtered_cds.sorted.txt > B_septemdierum.Trinity.merged95.filtered.fasta
+
 # Assembly statistics
-perl /gpfs/data/rbeinart/bin/trinityrnaseq-v2.11.0/util/TrinityStats.pl B_septemdierum.Trinity.merged95.filtered.cds > TrinityStats.txt
+perl /gpfs/data/rbeinart/bin/trinityrnaseq-v2.11.0/util/TrinityStats.pl B_septemdierum.Trinity.merged95.filtered.fasta > TrinityStats.txt
 
 # Assembly completeness
 source activate busco
 
-busco -i B_septemdierum.Trinity.merged95.filtered.cds -l mollusca_odb10 -o busco_mollusca_merged -m tran -c 24
+busco -i B_septemdierum.Trinity.merged95.filtered.fasta -l mollusca_odb10 -o busco_mollusca_merged -m tran -c 24
 
