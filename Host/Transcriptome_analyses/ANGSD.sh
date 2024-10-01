@@ -43,9 +43,6 @@ zcat ANGSD/${POP}.glf.gz > ANGSD/${POP}.glf
 angsd -P 24 -bam ${POP}.list -ref B_septemdierum.Trinity.merged95.filtered.fasta -anc B_septemdierum.Trinity.merged95.filtered.fasta -gl 1 -baq 1 -C 50 -minInd ${IND} -minMapQ 30 -minQ 20 -setMinDepth 2 -setMaxDepth 260 -doCounts 1 -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 1 -doMaf 1 -doMajorMinor 4 -doSaf 2 -indF ANGSD/${POP}.indF -out ANGSD/${POP}
 /gpfs/data/rbeinart/Software/ngsTools/angsd/misc/realSFS ANGSD/${POP}.saf.idx -tole 1e-6 -maxIter 5000 -P 24 -fold 1 > ANGSD/$POP.sfs
 angsd -P 24 -bam ${POP}.list -ref B_septemdierum.Trinity.merged95.filtered.fasta -anc B_septemdierum.Trinity.merged95.filtered.fasta -gl 1 -baq 1 -C 50 -minInd ${IND} -minMapQ 30 -minQ 20 -setMinDepth 2 -setMaxDepth 260 -doCounts 1 -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 1 -doMaf 1 -doMajorMinor 4 -doSaf 2 -indF ANGSD/${POP}.indF -doThetas 1 -pest ANGSD/${POP}.sfs -out ANGSD/${POP}
-/gpfs/data/rbeinart/Software/ngsTools/angsd/misc/realSFS saf2theta ANGSD/${POP}.saf.idx -outname ANGSD/${POP} -sfs ANGSD/${POP}.sfs -fold 1
-/gpfs/data/rbeinart/Software/ngsTools/angsd/misc/thetaStat do_stat ANGSD/${POP}.thetas.idx
-/gpfs/data/rbeinart/Software/ngsTools/angsd/misc/thetaStat do_stat ANGSD/${POP}.thetas.idx -win 500 -step 100 -outnames ANGSD/${POP}.thetas
 done
 
 cat ANGSD/TC.indF ANGSD/THM.indF ANGSD/ABE.indF ANGSD/TM.indF > ANGSD/B_septemdierum.indF 
